@@ -116,7 +116,6 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             );
 
             bool isHit = (hit2D.collider != null);
-            Debug.Log($"ishit :{isHit}");
             Debug.DrawRay(origin, dir * rayLength, isHit ? Color.green : Color.red, 0.5f);
 
             if (isHit)
@@ -135,7 +134,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
                 break;
 
             case float r when r > 0f && r < 1f:
-                // hole is 0 % > && hole is < 100% open
+                // hole is > 0 %  && hole is < 100% open
                 UpdateWaterLevel(halfOpenHoleWaterAmount);
                 break;
 
@@ -153,8 +152,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     public void UpdateWaterLevel(float amount)
     {        
         _currentWaterY += amount * Time.deltaTime;
-        _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);
-        Debug.Log($"ÇöÀç current water value : {_currentWaterY}");
+        _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);        
 
         if( _currentWaterY >= _maxWaterY)
         {

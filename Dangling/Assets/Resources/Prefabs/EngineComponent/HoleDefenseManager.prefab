@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4902901617376044153}
   - component: {fileID: 8237399929478971051}
+  - component: {fileID: 797628061988107011}
   m_Layer: 0
   m_Name: HoleDefenseManager
   m_TagString: Untagged
@@ -53,9 +54,21 @@ MonoBehaviour:
   rayLength: 100
   _maxWaterY: 100
   _currentWaterY: 0
-  minWaterY: 0
-  maxWaterY: 10
-  openHoleWaterAmount: 8
-  halfOpenHoleWaterAmount: 5
+  openHoleWaterAmount: 3
+  halfOpenHoleWaterAmount: 1
   closeHoleWaterAmount: 0
   time: 1000
+--- !u!114 &797628061988107011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6475746126758107724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544bbab721377ca47867cd3261abf89e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 10000
+  maxIceCount: 3
