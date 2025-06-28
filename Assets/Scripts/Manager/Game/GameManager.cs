@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     private float _LoadProgress = 0f;
     private string _LoadProgressText;
     private PlayerComponent playerComponent;
+    private int Phase;
 
     //public
     public int totalPlayTimeMS = 50;
@@ -47,7 +48,8 @@ public class GameManager : MonoBehaviour
     {
         {550000, typeof(TimeManager)},
         {600000, typeof(HoleDefenseManager)},
-        {610000, typeof(TimeEventManager)},
+        {610000, typeof(TimeEventManager)}, 
+        {620000, typeof(LightManager)},
 
     };
 
@@ -62,6 +64,8 @@ public class GameManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);  // this 대신 gameObject 사용
+
+        Phase = 1;
 
         foreach (var engineComponent in _engineComponents)
         {
@@ -103,6 +107,11 @@ public class GameManager : MonoBehaviour
     public string GetLoadProgressText()
     {
         return _LoadProgressText;
+    }
+
+    public int GetPhase()
+    {
+        return Phase;
     }
 
     public void InitMonoBehaviourGameEngine()
@@ -158,12 +167,16 @@ public class GameManager : MonoBehaviour
             Debug.Log("b 만료: 첫 번째 감속 완료 (85% 속도)");
 
             ChangeBackground();
+
+            Phase = 2;
             
             // c 타이머 시작 (두 번째 감속 구간)
             Timer cTimer = new Timer();
             cTimer.SetTimer(ETimerType.GameTime, false, false, cMs, Constant.FloatingPoint.FLOATING_POINT_MULTIPLIER, (ct) =>
             {
                 Debug.Log("c 만료: 두 번째 감속 완료 (70% 속도)");
+
+                Phase = 3;
                 
                 // a 타이머 (최종 구간 - 70% 속도 유지)
                 Timer aTimer = new Timer();

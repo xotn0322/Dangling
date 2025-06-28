@@ -74,6 +74,8 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
         spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
         {
             SpawnNextHole();
+            if (GameManager.Instance.GetPhase() == 1)
+                LightManager.Instance.StartAlert("Orange");
             t.CurrentTimeMs = time;
         });
         TimeManager.Instance.ResisterTimer(spawnTimer);
