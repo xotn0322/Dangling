@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 {
-    #region �������̽�
+    #region instance
     public static HoleDefenseManager Instance
     {
         get
@@ -124,11 +124,10 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
                 break;
 
             case float r when r >= 1f:
-                Debug.Log("���?������ ������ ����");
+               
                 break;
 
             default:
-                Debug.LogWarning($"��ȿ���� ���� ���� ����: {ratio}");
                 break;
         }
     }
@@ -136,6 +135,13 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     private IEnumerable<Vector2> SamplePoints2D(Vector3 holePos, int count)
     {
         yield return new Vector2(holePos.x, holePos.y);
+        float radius = 0.5f;
+        for (int i = 0; i < count - 1; i++)
+        {
+            float angle = (360f / (count - 1) * i) * Mathf.Deg2Rad;
+            Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            yield return new Vector2(holePos.x, holePos.y) + offset;
+        }
     }
 
     public void Update()
