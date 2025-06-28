@@ -2912,7 +2912,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CreditWindow: {fileID: 1468378724}
-  TitleButtonBack: []
+  TitleButtonBack:
+  - {fileID: 1199524643}
+  - {fileID: 1806565719}
+  - {fileID: 844735093}
+  - {fileID: 1506012726}
   FakeLoadingTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
