@@ -37,6 +37,8 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     private int _nextSpawnIndex =0;
     private bool isActiveHole;
 
+    private bool isSpill = false;
+
     public float averageCoverRatio { get; private set; }
 
     public void Awake()
@@ -74,6 +76,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
         spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
         {
             SpawnNextHole();
+            //SoundManager.Instance.PlaySFX("구멍 생김2");
             if (GameManager.Instance.GetPhase() == 1)
                 LightManager.Instance.StartAlert("Orange");
             t.CurrentTimeMs = time;
@@ -153,6 +156,16 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 
     public void UpdateWaterLevel(float amount)
     {        
+        if (!isSpill)
+        {
+            isSpill = true;
+            SoundManager.Instance.PlaySFX("물들어옴");
+            Timer spillTimer = new Timer();
+            spillTimer.SetTimer(ETimerType.GameTime, false, false, 20000, 1000, actionOnExpire: (t) => {
+                isSpill = false;
+            });
+            TimeManager.Instance.ResisterTimer(spillTimer);
+        }
         _currentWaterY += amount * Time.deltaTime;
         _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);        
 

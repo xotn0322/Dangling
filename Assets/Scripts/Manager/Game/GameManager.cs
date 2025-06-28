@@ -161,6 +161,11 @@ public class GameManager : MonoBehaviour
         long bMs = (long)(totalPlayTimeMS * 0.3f);     // b = T*0.3 (30% 구간)
         long cMs = (long)(totalPlayTimeMS * 0.2f);     // c = T*0.2 (20% 구간)
 
+        Timer tideTimer = new Timer();
+        tideTimer.SetTimer(ETimerType.GameTime, false, false, 13000, 1000, actionOnExpire: (t) => {
+            SoundManager.Instance.PlaySFX("파도바다1");
+            t.CurrentTimeMs = 13000;
+        });
         // b 타이머 (첫 번째 감속 구간)
         Timer bTimer = new Timer();
         bTimer.SetTimer(ETimerType.GameTime, false, false, bMs, Constant.FloatingPoint.FLOATING_POINT_MULTIPLIER, (bt) =>
@@ -205,6 +210,18 @@ public class GameManager : MonoBehaviour
     private void ChangeBackground() 
     {
         TimeEventManager.Instance.ChangeBackGround();
+        Timer windTimer = new Timer();
+        Timer breathTimer = new Timer();
+        windTimer.SetTimer(ETimerType.GameTime, false, false, 15000, 1000, actionOnExpire: (t) => {
+            SoundManager.Instance.PlaySFX("바람1");
+            t.CurrentTimeMs = 15000;
+        });
+        breathTimer.SetTimer(ETimerType.GameTime, false, false, 12000, 1000, actionOnExpire: (t) => {
+            SoundManager.Instance.PlaySFX("입김2");
+            t.CurrentTimeMs = 12000;
+        });
+        TimeManager.Instance.ResisterTimer(windTimer);
+        TimeManager.Instance.ResisterTimer(breathTimer);
     }
 
     private void EndGame() 

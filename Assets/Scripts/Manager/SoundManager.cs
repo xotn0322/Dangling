@@ -39,10 +39,10 @@ public class SoundManager : MonoBehaviour, IEngineComponent
     [SerializeField] private bool isMuted = false;
 
     // AudioMixer 파라미터 이름들
-    private const string MASTER_VOLUME_PARAM = "MasterVolume";
-    private const string MUSIC_VOLUME_PARAM = "MusicVolume";
-    private const string SFX_VOLUME_PARAM = "SFXVolume";
-    private const string VOICE_VOLUME_PARAM = "VoiceVolume";
+    private const string MASTER_VOLUME_PARAM = "Master";
+    private const string MUSIC_VOLUME_PARAM = "BGM";
+    private const string SFX_VOLUME_PARAM = "SFX";
+    private const string VOICE_VOLUME_PARAM = "Voice";
 
     // 사운드 딕셔너리 (이름으로 빠른 접근)
     private Dictionary<string, AudioClip> musicDictionary = new Dictionary<string, AudioClip>();
