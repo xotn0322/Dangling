@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227fb4fca7f1d934884d6cd5bba00eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadingWindow: {fileID: 0}
+  LoadingWindow: {fileID: 1961829299}
 --- !u!224 &1517953411
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1864,14 +1864,14 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1387684250}
   m_PlaneDistance: 2
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2593,6 +2593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14dc9490e363bc479c94e29e49f87b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalPlayTimeMS: 180000
 --- !u!4 &1812339654
 Transform:
   m_ObjectHideFlags: 0
@@ -2860,6 +2861,11 @@ PrefabInstance:
 --- !u!224 &1961829298 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 294173197521310462, guid: 405867bd2a7ae9146914ba43d7c852bd, type: 3}
+  m_PrefabInstance: {fileID: 1961829297}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1961829299 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5479640341813802959, guid: 405867bd2a7ae9146914ba43d7c852bd, type: 3}
   m_PrefabInstance: {fileID: 1961829297}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1973229873

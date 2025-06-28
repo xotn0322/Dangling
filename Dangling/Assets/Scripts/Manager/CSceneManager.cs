@@ -56,6 +56,7 @@ public class CSceneManager : MonoBehaviour
             loadingTime += Time.deltaTime;
 
             //// TODO : Show Loading Progress
+            GameManager.Instance.LoadGame();
 
         }
 
