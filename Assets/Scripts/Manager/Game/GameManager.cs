@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         {600000, typeof(HoleDefenseManager)},
         {610000, typeof(TimeEventManager)}, 
         {620000, typeof(LightManager)},
+        {630000, typeof(SoundManager)}
 
     };
 
