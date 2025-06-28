@@ -44,10 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1221a23f52a1284fb26062d3dfa752a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _holePrefabs: []
   mainCam: {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 0
   sampleCount: 25
   rayLength: 100
+  _maxWaterY: 100
+  _currentWaterY: 0
+  minWaterY: 0
+  maxWaterY: 10
+  openHoleWaterAmount: 8
+  halfOpenHoleWaterAmount: 5
+  closeHoleWaterAmount: 0
   time: 1000

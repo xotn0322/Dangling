@@ -26,6 +26,13 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     public LayerMask playerMask;
     public int sampleCount = 25;
     public float rayLength = 100f;
+
+    public float _maxWaterY = 100f;
+    public float _currentWaterY = 0.0f;
+    public float openHoleWaterAmount;
+    public float halfOpenHoleWaterAmount;
+    public float closeHoleWaterAmount;
+
     public long time;
     private int _nextSpawnIndex =0;
     private bool isActiveHole;
@@ -52,7 +59,6 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     {
         _block.InitializeHoles();
         isActiveHole = false;
-
         holes = _block.PickRandomPositions(1, false);
         _holePrefabs = new GameObject[holes.Length];
 
@@ -72,12 +78,13 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 
         int index = _nextSpawnIndex;       
         Hole h = holes[_nextSpawnIndex++];
-        Vector3 spawnPos = new Vector3(h.xPosition, h.yPosition, 0f);
+        Vector3 spawnPos = new Vector3(h.xPosition, h.yPosition, .5f);
+        Quaternion rot = Quaternion.Euler(0f, 180f, 0f);
 
         GameObject holePrefab = ResourcesManager.Instance.Load<GameObject>("Prefabs/Hole");
         if (holePrefab != null)
         {
-            GameObject instance = Instantiate(holePrefab, spawnPos, Quaternion.identity);
+            GameObject instance = Instantiate(holePrefab, spawnPos, rot);
             _holePrefabs[index] = instance;
             isActiveHole = true;
         }
@@ -85,31 +92,28 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 
     public float CheckCoverRatio(GameObject holeGO)
     {
-        if (holeGO == null)
-            return 0f;
+        if (holeGO == null) return 0f;
 
         int hitCount = 0;
-
         foreach (var point in SamplePoints2D(holeGO.transform.position, sampleCount))
         {
-            Vector3 origin = new Vector3(point.x, point.y, holeGO.transform.position.z);
-
+            Vector3 origin = new Vector3(point.x, point.y, holeGO.transform.position.z - 0.1f);
             Vector3 dir = holeGO.transform.forward;
+            Ray ray = new Ray(origin, dir);
 
-            bool isHit = Physics.Raycast(
-                origin,
-                dir,
-                out RaycastHit hitInfo,
+            RaycastHit2D hit2D = Physics2D.GetRayIntersection(
+                ray,
                 rayLength,
-                playerMask
+                playerMask    // LayerMask.GetMask("Player")¿©¾ß ÇÔ
             );
 
+            bool isHit = (hit2D.collider != null);
+            Debug.Log($"ishit :{isHit}");
             Debug.DrawRay(origin, dir * rayLength, isHit ? Color.green : Color.red, 0.5f);
 
-            if (isHit && hitInfo.collider.CompareTag("Player"))
+            if (isHit)
                 hitCount++;
         }
-
         return (float)hitCount / sampleCount;
     }
 
@@ -117,18 +121,38 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     {
         switch (ratio)
         {
-            case 0f:                
+            case 0f:
+                // hole is 100%
+                UpdateWaterLevel(openHoleWaterAmount);
                 break;
 
             case float r when r > 0f && r < 1f:
+                // hole is 0 % > && hole is < 100% open
+                UpdateWaterLevel(halfOpenHoleWaterAmount);
                 break;
 
             case float r when r >= 1f:
-               
+                // hole is 0% open
+                UpdateWaterLevel(closeHoleWaterAmount);
                 break;
 
             default:
+                Debug.Log("sibal fuck");
                 break;
+        }
+    }
+
+    public void UpdateWaterLevel(float amount)
+    {        
+        _currentWaterY += amount * Time.deltaTime;
+        _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);
+        Debug.Log($"ÇöÀç current water value : {_currentWaterY}");
+
+        if( _currentWaterY >= _maxWaterY)
+        {
+            //GameOver
+            //CSceneManager.Instance.LoadScene("GameOver");
+            Debug.Log("GameOver");
         }
     }
 
@@ -163,7 +187,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             }
 
             averageCoverRatio = totalCover / holeCount;
-            Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
+            //Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
             UpdateHoleState(averageCoverRatio);
         }
         
