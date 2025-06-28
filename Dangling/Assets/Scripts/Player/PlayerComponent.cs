@@ -12,7 +12,7 @@ public class PlayerComponent : MonoBehaviour
     private bool isLeftHand = false;
     private bool isRightFoot = false;
     private bool isRightHand = false;
-
+    private bool isJumped = false;
     private PlayerData playerData;
 
     //public
@@ -22,6 +22,8 @@ public class PlayerComponent : MonoBehaviour
     public GameObject L_foot;
     public GameObject R_foot;
     public float freezeFactor = 1f;
+    public float maxSpeed = 11f; 
+    public long jumpCoolTimeMs = 500;
 
     //function
     void Start()
@@ -41,7 +43,6 @@ public class PlayerComponent : MonoBehaviour
         if (L_handRigidbody != null && R_handRigidbody != null && bodyRigidbody != null)
         {
             HandleInput();
-            SetRbVelocity();
         }
     }
     
@@ -50,19 +51,39 @@ public class PlayerComponent : MonoBehaviour
         // A key - L_hand 왼쪽으로 addforce
         if (Input.GetKey(KeyCode.A))
         {
-            L_handRigidbody.AddForce(Vector3.left * playerData.forceStrength * freezeFactor, ForceMode2D.Impulse);
+            L_handRigidbody.AddForce(Vector3.left * playerData.forceStrength, ForceMode2D.Impulse);
+            // 최고속도 제한 (freezeFactor와 비례)
+            float currentMaxSpeed = maxSpeed * freezeFactor;
+            if (L_handRigidbody.velocity.magnitude > currentMaxSpeed)
+            {
+                L_handRigidbody.velocity = L_handRigidbody.velocity.normalized * currentMaxSpeed;
+            }
         }
         
         // D key - R_hand 오른쪽으로 addforce
         if (Input.GetKey(KeyCode.D))
         {
-            R_handRigidbody.AddForce(Vector3.right * playerData.forceStrength * freezeFactor, ForceMode2D.Impulse);
+            R_handRigidbody.AddForce(Vector3.right * playerData.forceStrength, ForceMode2D.Impulse);
+            // 최고속도 제한 (freezeFactor와 비례)
+            float currentMaxSpeed = maxSpeed * freezeFactor;
+            if (R_handRigidbody.velocity.magnitude > currentMaxSpeed)
+            {
+                R_handRigidbody.velocity = R_handRigidbody.velocity.normalized * currentMaxSpeed;
+            }
         }
         
         // Space key - body 위쪽으로 addforce
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
         {
-            bodyRigidbody.AddForce(Vector3.up * playerData.forceStrength * playerData.jumpStrength * freezeFactor, ForceMode2D.Impulse);
+            bodyRigidbody.AddForce(Vector3.up * playerData.forceStrength * playerData.jumpStrength, ForceMode2D.Impulse);
+            isJumped = true;
+
+            Timer jumpTimer = new Timer();
+            jumpTimer.SetTimer(ETimerType.GameTime, false, false, jumpCoolTimeMs, 1000, actionOnExpire: (t) =>
+            {
+                isJumped = false;
+            });
+            TimeManager.Instance.ResisterTimer(jumpTimer);
         }
 
         //왼손
@@ -123,14 +144,5 @@ public class PlayerComponent : MonoBehaviour
     public void SetFreezeFactor(float value)
     {
         freezeFactor = Mathf.Clamp01(value);
-    }
-
-    private void SetRbVelocity()
-    {
-        L_footRigidbody.velocity *= freezeFactor;
-        R_footRigidbody.velocity *= freezeFactor;
-        L_handRigidbody.velocity *= freezeFactor;
-        R_handRigidbody.velocity *= freezeFactor;
-        bodyRigidbody.velocity *= freezeFactor;
     }
 }

@@ -26,11 +26,10 @@ public class GameManager : MonoBehaviour
     private bool _LoadComplete = false;
     private float _LoadProgress = 0f;
     private string _LoadProgressText;
-
     private PlayerComponent playerComponent;
 
     //public
-    public int totalPlayTimeMS = 180000;
+    public int totalPlayTimeMS = 50;
 
 
     //functions
@@ -48,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         {550000, typeof(TimeManager)},
         {600000, typeof(HoleDefenseManager)},
+        {610000, typeof(TimeEventManager)},
 
     };
 
@@ -135,42 +135,37 @@ public class GameManager : MonoBehaviour
     {
         InitMonoBehaviourGameEngine();
         SpawnPlayer();
-        //StartGameTimer();
+        StartGameTimer();
     }
 
     private void SpawnPlayer()
     {
         var resource = ResourcesManager.Instance.Load<GameObject>("Prefabs/Player");
-        Instantiate(resource);
-        playerComponent = resource.GetComponent<PlayerComponent>(); 
+        var player = Instantiate(resource);
+        playerComponent = player.GetComponent<PlayerComponent>();
     }
 
     private void StartGameTimer()
     {
         long halfMs = (long)(totalPlayTimeMS * 0.5f);  // a = T/2
-        long bMs = (long)(halfMs * (2f / 3f));                 // b = T/3
-        long cMs = (long)(halfMs * (1f / 3f));                 // c = T/6
+        long bMs = (long)(totalPlayTimeMS * 0.3f);     // b = T*0.3 (30% 구간)
+        long cMs = (long)(totalPlayTimeMS * 0.2f);     // c = T*0.2 (20% 구간)
 
-        // b 타이머
+        // b 타이머 (첫 번째 감속 구간)
         Timer bTimer = new Timer();
         bTimer.SetTimer(ETimerType.GameTime, false, false, bMs, Constant.FloatingPoint.FLOATING_POINT_MULTIPLIER, (bt) =>
         {
-            Debug.Log("b 만료: 배경 전환 + 감속1 시작");
+            Debug.Log("b 만료: 첫 번째 감속 완료 (85% 속도)");
+
             ChangeBackground();
-
-            // b 타이머 구간 감속 (1.0 → 0.85)
-            StartCoroutine(SmoothFreeze(1f, 0.85f, bMs / 1000f, playerComponent));
-
-            // c 타이머 시작
+            
+            // c 타이머 시작 (두 번째 감속 구간)
             Timer cTimer = new Timer();
             cTimer.SetTimer(ETimerType.GameTime, false, false, cMs, Constant.FloatingPoint.FLOATING_POINT_MULTIPLIER, (ct) =>
             {
-                Debug.Log("c 만료: 감속2 시작 + a 시작");
-
-                // c 타이머 구간 감속 (0.85 → 0.7)
-                StartCoroutine(SmoothFreeze(0.85f, 0.7f, cMs / 1000f, playerComponent));
-
-                // a 타이머
+                Debug.Log("c 만료: 두 번째 감속 완료 (70% 속도)");
+                
+                // a 타이머 (최종 구간 - 70% 속도 유지)
                 Timer aTimer = new Timer();
                 aTimer.SetTimer(ETimerType.GameTime, false, false, halfMs, Constant.FloatingPoint.FLOATING_POINT_MULTIPLIER, (at) =>
                 {
@@ -184,12 +179,18 @@ public class GameManager : MonoBehaviour
             TimeManager.Instance.ResisterTimer(cTimer);
         });
 
+        // b 타이머 구간 감속 (1.0 → 0.85)
+        StartCoroutine(SmoothFreeze(1f, 0.85f, bMs / 1000f, playerComponent));
+        
+        // c 타이머 구간 감속 (0.85 → 0.7) - bMs 후에 시작
+        StartCoroutine(SmoothFreezeDelayed(0.85f, 0.7f, cMs / 1000f, playerComponent, bMs / 1000f));
+
         TimeManager.Instance.ResisterTimer(bTimer);
     }
 
     private void ChangeBackground() 
     {
-
+        TimeEventManager.Instance.ChangeBackGround();
     }
 
     private void EndGame() 
@@ -210,6 +211,23 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        freezeTarget.SetFreezeFactor(to);
+    }
+
+    private IEnumerator SmoothFreezeDelayed(float from, float to, float duration, PlayerComponent freezeTarget, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float freezeFactor = Mathf.Lerp(from, to, t);
+            freezeTarget.SetFreezeFactor(freezeFactor);
+            yield return null;
+        }
+        
         freezeTarget.SetFreezeFactor(to);
     }
 

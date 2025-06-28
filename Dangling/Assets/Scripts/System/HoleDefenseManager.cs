@@ -112,11 +112,11 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             RaycastHit2D hit2D = Physics2D.GetRayIntersection(
                 ray,
                 rayLength,
-                playerMask    // LayerMask.GetMask("Player")¿©¾ß ÇÔ
+                playerMask    // LayerMask.GetMask("Player")ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             );
 
             bool isHit = (hit2D.collider != null);
-            Debug.Log($"ishit :{isHit}");
+            // Debug.Log($"ishit :{isHit}");
             Debug.DrawRay(origin, dir * rayLength, isHit ? Color.green : Color.red, 0.5f);
 
             if (isHit)
@@ -154,7 +154,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     {        
         _currentWaterY += amount * Time.deltaTime;
         _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);
-        Debug.Log($"ÇöÀç current water value : {_currentWaterY}");
+        //Debug.Log($"ï¿½ï¿½ï¿½ï¿½ current water value : {_currentWaterY}");
 
         if( _currentWaterY >= _maxWaterY)
         {
@@ -195,7 +195,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             }
 
             averageCoverRatio = totalCover / holeCount;
-            //Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
+            //Debug.Log($"ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {averageCoverRatio}");
             UpdateHoleState(averageCoverRatio);
         }
         
