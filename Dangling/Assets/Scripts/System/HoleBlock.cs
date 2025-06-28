@@ -5,14 +5,13 @@ using UnityEngine;
 public class HoleBlock
 {
     public List<Hole> holes = new();
-
+    public List<HolePositionData> positionDatas =new();
 
     public void InitializeHoles()
     {
-        // 규격화 해놓은 구멍 위치들 선언
-        holes.Add(new(500f, 400f));
-        holes.Add(new(700f, 900f));
-        holes.Add(new(100f, 300f));
+        holes.Add(new(3f, -3f));
+        holes.Add(new(7f, 1f));
+        holes.Add(new(2f, 4f));
     }
 
     public Hole PickRandomPosition()

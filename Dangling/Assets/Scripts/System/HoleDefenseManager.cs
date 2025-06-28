@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoleDefenseManager : IEngineComponent
+public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 {
     #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
     public static HoleDefenseManager Instance
@@ -17,15 +17,16 @@ public class HoleDefenseManager : IEngineComponent
     private static HoleDefenseManager _instance;
     #endregion
 
-    [Header("component")]
-    private HoleBlock _hole = new();
-    private UI_HoleDefense _ui;
+    private HoleBlock _block = new();
+    private Hole[] holes;
 
     [Header("value")]
     public Camera mainCam;
     public LayerMask playerMask;
     public int sampleCount = 25;
     public float rayLength = 100f;
+    public long time;
+    private int _nextSpawnIndex =0;
 
     public float averageCoverRatio { get; private set; }
 
@@ -33,12 +34,13 @@ public class HoleDefenseManager : IEngineComponent
     {
         playerMask=LayerMask.GetMask("Player");
 
-        if(mainCam == null )
+        if (mainCam == null )
         {
             GameObject go = GameObject.Find("Main Camera");
             if (go != null)
                 mainCam = Util.GetOrAddComponent<Camera>(go);
         }
+
 
         StartHoleDefense();
         return this;
@@ -46,7 +48,32 @@ public class HoleDefenseManager : IEngineComponent
 
     public void StartHoleDefense()
     {
-        _hole.InitializeHoles();
+        _block.InitializeHoles();
+
+        holes = _block.PickRandomPositions(1, false);
+
+        Timer spawnTimer = new Timer();
+        spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
+        {
+            SpawnNextHole();
+            t.CurrentTimeMs = time;
+        });
+        TimeManager.Instance.ResisterTimer(spawnTimer);
+    }
+
+    private void SpawnNextHole()
+    {
+        if (holes == null || _nextSpawnIndex >= holes.Length)
+        {
+            return;
+        }
+
+        Hole h = holes[_nextSpawnIndex++];
+        Vector3 spawnPos = new Vector3(h.xPosition, h.yPosition, 0f);
+
+        GameObject holePrefab = ResourcesManager.Instance.Load<GameObject>("Prefabs/Hole");
+        if (holePrefab != null)
+            Instantiate(holePrefab, spawnPos, Quaternion.identity);
     }
 
     public float CheckCoverRatio(Hole hole)
@@ -57,7 +84,15 @@ public class HoleDefenseManager : IEngineComponent
         foreach (var point in SamplePoints(worldPos, sampleCount))
         {
             Vector2 dir = (mainCam.transform.position - (Vector3)point).normalized;
+            
             var hit = Physics2D.Raycast(point, dir, rayLength, playerMask);
+
+            Color rayColor = (hit.collider != null && hit.collider.CompareTag("Player"))
+                             ? Color.green   
+                             : Color.red;
+            Debug.DrawRay(point, dir * rayLength, rayColor, 1.0f);
+
+
             if (hit.collider != null && hit.collider.CompareTag("Player"))
                 hitCount++;
         }
@@ -96,19 +131,20 @@ public class HoleDefenseManager : IEngineComponent
         yield return center;
     }
 
-    public void Tick()
+    public void Update()
     {
-        int holeCount = _hole.holes.Count;
+        int holeCount = _block.holes.Count;
         if (holeCount == 0)
             return;
 
         float totalCover = 0f;
-        foreach (var hole in _hole.holes)
+        foreach (var hole in _block.holes)
         {
             totalCover += CheckCoverRatio(hole);
         }
 
         averageCoverRatio = totalCover / holeCount;
+        Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
         UpdateHoleState(averageCoverRatio);
     }
 
@@ -116,4 +152,17 @@ public class HoleDefenseManager : IEngineComponent
     {
         // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
+
+    #region Get
+    public Hole[] GetHole()
+    {
+        if (holes.Length < 3)
+        {
+            Debug.Log("holes is null");
+            return null;
+        }
+        else
+            return holes;
+    }
+    #endregion
 }

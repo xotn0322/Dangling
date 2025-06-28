@@ -11,5 +11,4 @@ public class Hole
         this.xPosition = x;
         this.yPosition = y;       
     }
-
 }
