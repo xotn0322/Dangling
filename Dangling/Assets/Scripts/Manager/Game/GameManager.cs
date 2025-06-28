@@ -35,13 +35,16 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, IEngineComponent>_engineComponents = new Dictionary<int, IEngineComponent>()
     {
         {150, ResourcesManager.Instance },
+        {500, RandomManager.Instance },
         {1100, FileIOManager.Instance},
-        {100000, GameDataManager.Instance}
+        {100000, GameDataManager.Instance},
+        {200000, HoleDefenseManager.Instance},
     };
 
     private Dictionary<int, Type>_monoBehaviorEngineComponents = new Dictionary<int, Type>()
     {
         {550000, typeof(TimeManager)},
+        
     };
 
     private void Awake()
@@ -60,6 +63,8 @@ public class GameManager : MonoBehaviour
         {
             engineComponent.Value.Init();
         }
+
+        CSceneManager.Instance.Test();
     }
 
     public async void LoadGame() //SceneManager에서 관리
@@ -120,7 +125,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Game Loading Complete!");
-
+        
         StartGameInternal();
     }
 

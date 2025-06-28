@@ -36,6 +36,11 @@ public class CSceneManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void Test()
+    {
+        StartCoroutine(TestLoad());
+    }
+
     IEnumerator LoadSceneProcess()
     {
         // Wait 2 frames for LoadingScene
@@ -67,5 +72,32 @@ public class CSceneManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         
         GameManager.Instance.StartGame();
+    }
+
+    IEnumerator TestLoad()
+    {
+        // Wait 2 frames for LoadingScene
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        GameManager.Instance.LoadGame();
+
+        while (GameManager.Instance.IsLoadComplete() == false)
+        {
+            yield return new WaitForEndOfFrame();
+            // LoadingSceneController.Instance.SetLoadingProgress(GameManager.Instance.GetLoadProgress());
+            // LoadingSceneController.Instance.SetLoadingText(GameManager.Instance.GetLoadProgressText());
+        }
+
+        // Wait 2 frames for applying new Scene
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        GameManager.Instance.InitMonoBehaviourGameEngine();
+
+        // Wait 1 frame for MonoBehaviour GameEngine Load
+        yield return new WaitForEndOfFrame();
+
+        //GameManager.Instance.StartGame();
     }
 }
