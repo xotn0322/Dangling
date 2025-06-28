@@ -1,0 +1,7 @@
+[
+    {
+        "id" : "Player",
+        "forceStrength" : 2,
+        "jumpStrength" : 60
+    }
+]

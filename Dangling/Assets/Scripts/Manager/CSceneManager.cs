@@ -98,6 +98,6 @@ public class CSceneManager : MonoBehaviour
         // Wait 1 frame for MonoBehaviour GameEngine Load
         yield return new WaitForEndOfFrame();
 
-        //GameManager.Instance.StartGame();
+        GameManager.Instance.StartGame();
     }
 }

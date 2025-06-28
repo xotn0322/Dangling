@@ -67,20 +67,20 @@ public class UIManager
         }
     }
 
-    public static T ShowSceneUI<T>(string name = null) where T : UI_Base
-    {
-        if (string.IsNullOrEmpty(name))
-        {
-            name = typeof(T).Name;
-        }
+    // public static T ShowSceneUI<T>(string name = null) where T : UI_Base
+    // {
+    //     if (string.IsNullOrEmpty(name))
+    //     {
+    //         name = typeof(T).Name;
+    //     }
 
-        string path = $"{Constant.Path.DEFAULT_RESOURCES_DEFAULT_UI_SCENE_PATH}/{name}";
-        GameObject go = Util.Instantiate(path);
+    //     string path = $"{Constant.Path.DEFAULT_RESOURCES_DEFAULT_UI_SCENE_PATH}/{name}";
+    //     GameObject go = Util.Instantiate(path);
 
-        T sceneUI = Util.GetOrAddComponent<T>(go);
+    //     T sceneUI = Util.GetOrAddComponent<T>(go);
 
-        return sceneUI;
-    }
+    //     return sceneUI;
+    // }
 
     public void Clear()
     {

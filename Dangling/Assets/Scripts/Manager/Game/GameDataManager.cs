@@ -23,7 +23,7 @@ public class GameDataManager : IEngineComponent
     {
         _gameDataManagers = new Dictionary<Type, IDataManager>
         {
-            
+            {typeof(PlayerData), PlayerDataManager.Instance}
         };
 
         return this;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HoleDefenseManager : IEngineComponent
 {
-    #region ÀÎÅÍÆäÀÌ½º
+    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
     public static HoleDefenseManager Instance
     {
         get
@@ -70,23 +70,23 @@ public class HoleDefenseManager : IEngineComponent
         switch (ratio)
         {
             case 0f:
-                Debug.Log("¸ðµç ±¸¸ÛÀÌ ¿ÏÀüÈ÷ °³¹æµÊ");
-                // ¹°ÀÌ Â÷¿À¸£´Â ¼Óµµ°¡ ÃÖ´ë ¼Óµµ
+                Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Óµï¿½
                 break;
 
             case float r when r > 0f && r < 1f:
-                Debug.Log($"ºÎºÐÀûÀ¸·Î ¸·Èû: {r:P0}");
-                // ¹°ÀÌ Â÷¿À¸§
+                Debug.Log($"ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {r:P0}");
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 break;
 
             case float r when r >= 1f:
-                Debug.Log("¸ðµç ±¸¸ÛÀÌ ¿ÏÀüÈ÷ ¸·Èû");
-                // ¹°ÀÌ Â÷¿À¸£´Â ¼Óµµ°¡ ¸ØÃã
+                Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 break;
 
             default:
-                Debug.LogWarning($"À¯È¿ÇÏÁö ¾ÊÀº °¡¸² ºñÀ²: {ratio}");
-                // ÀÌ°Å ·Î±× ÂïÈ÷¸é ¤¸µÊ 
+                Debug.LogWarning($"ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {ratio}");
+                // ï¿½Ì°ï¿½ ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
                 break;
         }
     }
@@ -114,6 +114,6 @@ public class HoleDefenseManager : IEngineComponent
 
     public void StopHoleDefense()
     {
-        // °ÔÀÓ Á¾·á ½Ã ·ÎÁ÷
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 }

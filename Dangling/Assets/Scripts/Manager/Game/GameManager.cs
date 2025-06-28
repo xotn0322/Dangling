@@ -131,7 +131,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGameInternal()
     {
-        
+        var resource = ResourcesManager.Instance.Load<GameObject>("Prefabs/Player");
+        Instantiate(resource);
     }
 
     public void QuitGame()
