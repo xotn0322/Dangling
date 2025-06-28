@@ -54,6 +54,8 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             GameObject go = GameObject.Find("Main Camera");
             if (go != null)
                 mainCam = Util.GetOrAddComponent<Camera>(go);
+            else
+                Debug.Log("찾을 수 없음 ");
         }
 
 
