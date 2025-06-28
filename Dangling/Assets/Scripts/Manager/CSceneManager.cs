@@ -54,10 +54,6 @@ public class CSceneManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
 
             loadingTime += Time.deltaTime;
-
-            //// TODO : Show Loading Progress
-            GameManager.Instance.LoadGame();
-
         }
 
         op.allowSceneActivation = true;

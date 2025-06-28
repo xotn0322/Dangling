@@ -33,7 +33,10 @@ public class TitleScript : MonoBehaviour
 
     public void StartLoading()
     {
-        var loadingEngine = Task.Run(() => GameManager.Instance.InitMonoBehaviourGameEngine());
+        var loadingEngine = Task.Run(() =>
+        {
+            GameManager.Instance.LoadGame();
+        });
 
         CSceneManager.Instance.LoadScene("MainScene", loadingEngine, StartGame, FakeLoadingTime);
     }

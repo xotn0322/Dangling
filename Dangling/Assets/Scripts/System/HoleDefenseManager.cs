@@ -39,6 +39,12 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 
     public float averageCoverRatio { get; private set; }
 
+    public void Awake()
+    {
+        _instance = this;
+        DontDestroyOnLoad(this);
+    }
+
     public IEngineComponent Init()
     {
         playerMask=LayerMask.GetMask("Player");

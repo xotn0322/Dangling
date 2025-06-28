@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGameInternal()
     {
+        InitMonoBehaviourGameEngine();
         SpawnPlayer();
         //StartGameTimer();
     }
