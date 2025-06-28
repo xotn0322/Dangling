@@ -1234,11 +1234,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1526167376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 30, y: -30}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1108785710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1300,8 +1300,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227fb4fca7f1d934884d6cd5bba00eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "\uB85C_\uB529_\uC708_\uB3C4_\uC6B0": {fileID: 1961829299}
+  LoadingWindow: {fileID: 0}
 --- !u!224 &1517953411
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2479,7 +2479,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uD06C_\uB808_\uB527_\uB2EB_\uAE30"
+        m_MethodName: CloseCreditWinodw
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2860,11 +2860,6 @@ PrefabInstance:
 --- !u!224 &1961829298 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 294173197521310462, guid: 405867bd2a7ae9146914ba43d7c852bd, type: 3}
-  m_PrefabInstance: {fileID: 1961829297}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1961829299 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5479640341813802959, guid: 405867bd2a7ae9146914ba43d7c852bd, type: 3}
   m_PrefabInstance: {fileID: 1961829297}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1973229873
