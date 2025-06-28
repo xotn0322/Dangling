@@ -1,2 +1,0 @@
-# Dangling
-Game Jam

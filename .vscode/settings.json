@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Dangling.sln"
+    "dotnet.defaultSolution": "Dangling_UPR.sln"
 }
