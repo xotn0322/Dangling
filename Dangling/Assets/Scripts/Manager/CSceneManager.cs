@@ -19,7 +19,7 @@ public class CSceneManager : MonoBehaviour
 
     private static string _nextScene;
 
-    public GameObject 로_딩_윈_도_우;
+    public GameObject LoadingWindow;
 
     public void Awake()
     {
@@ -29,7 +29,7 @@ public class CSceneManager : MonoBehaviour
 
     public void LoadScene(string sceneName, Task loadAction, Action onLoadCompleteAction, float minLoadingTime = 0f)
     {
-        로_딩_윈_도_우.SetActive(true);
+        LoadingWindow.SetActive(true);
 
         _nextScene = sceneName;
         SceneManager.LoadScene(Constant.Scene.LOADING_SCENE_NAME);
@@ -65,7 +65,7 @@ public class CSceneManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
 
-        로_딩_윈_도_우.SetActive(false);
+        LoadingWindow.SetActive(false);
 
         onLoadCompleteAction.RunExt();
     }
