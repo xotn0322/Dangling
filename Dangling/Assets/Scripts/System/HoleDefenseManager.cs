@@ -55,7 +55,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             if (go != null)
                 mainCam = Util.GetOrAddComponent<Camera>(go);
             else
-                Debug.Log("Ã£À» ¼ö ¾øÀ½ ");
+                Debug.Log("Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ");
         }
 
 
@@ -112,7 +112,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             RaycastHit2D hit2D = Physics2D.GetRayIntersection(
                 ray,
                 rayLength,
-                playerMask    // LayerMask.GetMask("Player")¿©¾ß ÇÔ
+                playerMask    // LayerMask.GetMask("Player")ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             );
 
             bool isHit = (hit2D.collider != null);
@@ -193,7 +193,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             }
 
             averageCoverRatio = totalCover / holeCount;
-            //Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
+            //Debug.Log($"ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {averageCoverRatio}");
             UpdateHoleState(averageCoverRatio);
         }
         

@@ -2593,7 +2593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14dc9490e363bc479c94e29e49f87b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalPlayTimeMS: 180000
+  totalPlayTimeMS: 10000
 --- !u!4 &1812339654
 Transform:
   m_ObjectHideFlags: 0
