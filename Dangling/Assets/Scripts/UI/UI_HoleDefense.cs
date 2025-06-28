@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class UI_HoleDefense : UI_Base
 
     enum Images
     {
-        Hole,
+
     }
 
     enum GameObjects
@@ -23,16 +24,11 @@ public class UI_HoleDefense : UI_Base
     [Header("component")]
     UIManager ui = new UIManager();
 
-    [Header("Image")]
-    private Image hole;
 
 
     void Start()
     {
         init();
-
-        //mapping
-        hole = Get<Image>((int)Images.Hole);
     }
 
     private void init()
@@ -45,6 +41,7 @@ public class UI_HoleDefense : UI_Base
 
         FindComponent();
     }
+
 
     // Update is called once per frame
     void Update()

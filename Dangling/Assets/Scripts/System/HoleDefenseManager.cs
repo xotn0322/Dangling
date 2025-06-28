@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoleDefenseManager : IEngineComponent
+public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 {
-    #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½
+    #region instance
     public static HoleDefenseManager Instance
     {
         get
@@ -17,15 +17,18 @@ public class HoleDefenseManager : IEngineComponent
     private static HoleDefenseManager _instance;
     #endregion
 
-    [Header("component")]
-    private HoleBlock _hole = new();
-    private UI_HoleDefense _ui;
+    private HoleBlock _block = new();
+    private Hole[] holes;
+    public GameObject[] _holePrefabs;
 
     [Header("value")]
     public Camera mainCam;
     public LayerMask playerMask;
     public int sampleCount = 25;
     public float rayLength = 100f;
+    public long time;
+    private int _nextSpawnIndex =0;
+    private bool isActiveHole;
 
     public float averageCoverRatio { get; private set; }
 
@@ -33,12 +36,13 @@ public class HoleDefenseManager : IEngineComponent
     {
         playerMask=LayerMask.GetMask("Player");
 
-        if(mainCam == null )
+        if (mainCam == null )
         {
             GameObject go = GameObject.Find("Main Camera");
             if (go != null)
                 mainCam = Util.GetOrAddComponent<Camera>(go);
         }
+
 
         StartHoleDefense();
         return this;
@@ -46,19 +50,63 @@ public class HoleDefenseManager : IEngineComponent
 
     public void StartHoleDefense()
     {
-        _hole.InitializeHoles();
+        _block.InitializeHoles();
+        isActiveHole = false;
+
+        holes = _block.PickRandomPositions(1, false);
+        _holePrefabs = new GameObject[holes.Length];
+
+        Timer spawnTimer = new Timer();
+        spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
+        {
+            SpawnNextHole();
+            t.CurrentTimeMs = time;
+        });
+        TimeManager.Instance.ResisterTimer(spawnTimer);
     }
 
-    public float CheckCoverRatio(Hole hole)
+    private void SpawnNextHole()
     {
-        Vector2 worldPos = new Vector2(hole.xPosition, hole.yPosition);
+        if (holes == null || _nextSpawnIndex >= holes.Length)
+            return;
+
+        int index = _nextSpawnIndex;       
+        Hole h = holes[_nextSpawnIndex++];
+        Vector3 spawnPos = new Vector3(h.xPosition, h.yPosition, 0f);
+
+        GameObject holePrefab = ResourcesManager.Instance.Load<GameObject>("Prefabs/Hole");
+        if (holePrefab != null)
+        {
+            GameObject instance = Instantiate(holePrefab, spawnPos, Quaternion.identity);
+            _holePrefabs[index] = instance;
+            isActiveHole = true;
+        }
+    }
+
+    public float CheckCoverRatio(GameObject holeGO)
+    {
+        if (holeGO == null)
+            return 0f;
+
         int hitCount = 0;
 
-        foreach (var point in SamplePoints(worldPos, sampleCount))
+        foreach (var point in SamplePoints2D(holeGO.transform.position, sampleCount))
         {
-            Vector2 dir = (mainCam.transform.position - (Vector3)point).normalized;
-            var hit = Physics2D.Raycast(point, dir, rayLength, playerMask);
-            if (hit.collider != null && hit.collider.CompareTag("Player"))
+            Vector3 origin = new Vector3(point.x, point.y, holeGO.transform.position.z);
+
+            Vector3 dir = holeGO.transform.forward;
+
+            bool isHit = Physics.Raycast(
+                origin,
+                dir,
+                out RaycastHit hitInfo,
+                rayLength,
+                playerMask
+            );
+
+            Debug.DrawRay(origin, dir * rayLength, isHit ? Color.green : Color.red, 0.5f);
+
+            if (isHit && hitInfo.collider.CompareTag("Player"))
                 hitCount++;
         }
 
@@ -69,51 +117,73 @@ public class HoleDefenseManager : IEngineComponent
     {
         switch (ratio)
         {
-            case 0f:
-                Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½");
-                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Óµï¿½
+            case 0f:                
                 break;
 
             case float r when r > 0f && r < 1f:
-                Debug.Log($"ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {r:P0}");
-                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 break;
 
             case float r when r >= 1f:
-                Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
-                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+               
                 break;
 
             default:
-                Debug.LogWarning($"ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {ratio}");
-                // ï¿½Ì°ï¿½ ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
                 break;
         }
     }
 
-    private IEnumerable<Vector2> SamplePoints(Vector2 center, int count)
-    {        
-        yield return center;
+    private IEnumerable<Vector2> SamplePoints2D(Vector3 holePos, int count)
+    {
+        yield return new Vector2(holePos.x, holePos.y);
+        float radius = 0.5f;
+        for (int i = 0; i < count - 1; i++)
+        {
+            float angle = (360f / (count - 1) * i) * Mathf.Deg2Rad;
+            Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            yield return new Vector2(holePos.x, holePos.y) + offset;
+        }
     }
 
-    public void Tick()
+    public void Update()
     {
-        int holeCount = _hole.holes.Count;
-        if (holeCount == 0)
-            return;
-
-        float totalCover = 0f;
-        foreach (var hole in _hole.holes)
+        if(isActiveHole ==false)
         {
-            totalCover += CheckCoverRatio(hole);
+            return;
         }
+        else
+        {
+            int holeCount = _holePrefabs.Length;
+            if (holeCount == 0)
+                return;
 
-        averageCoverRatio = totalCover / holeCount;
-        UpdateHoleState(averageCoverRatio);
+            float totalCover = 0f;
+            foreach (var hole in _holePrefabs)
+            {
+                totalCover += CheckCoverRatio(hole);
+            }
+
+            averageCoverRatio = totalCover / holeCount;
+            Debug.Log($"Æò±Õ ¸·Èû : {averageCoverRatio}");
+            UpdateHoleState(averageCoverRatio);
+        }
+        
     }
 
     public void StopHoleDefense()
     {
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        
     }
+
+    #region Get
+    public Hole[] GetHole()
+    {
+        if (holes.Length < 3)
+        {
+            Debug.Log("holes is null");
+            return null;
+        }
+        else
+            return holes;
+    }
+    #endregion
 }

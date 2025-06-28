@@ -17,4 +17,6 @@ public static class Constant
     {
         public const long FLOATING_POINT_MULTIPLIER = 1000;
     }
+
+
 }

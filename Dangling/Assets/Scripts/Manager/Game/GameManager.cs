@@ -38,13 +38,14 @@ public class GameManager : MonoBehaviour
         {500, RandomManager.Instance },
         {1100, FileIOManager.Instance},
         {100000, GameDataManager.Instance},
-        {200000, HoleDefenseManager.Instance},
+       
     };
 
     private Dictionary<int, Type>_monoBehaviorEngineComponents = new Dictionary<int, Type>()
     {
         {550000, typeof(TimeManager)},
-        
+        {600000, typeof(HoleDefenseManager)},
+
     };
 
     private void Awake()
