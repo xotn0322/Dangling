@@ -64,8 +64,6 @@ public class GameManager : MonoBehaviour
         {
             engineComponent.Value.Init();
         }
-
-        CSceneManager.Instance.Test();
     }
 
     public async void LoadGame() //SceneManager에서 관리

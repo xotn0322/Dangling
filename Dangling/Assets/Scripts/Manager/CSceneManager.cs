@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +19,7 @@ public class CSceneManager : MonoBehaviour
 
     private static string _nextScene;
 
+    public GameObject 로_딩_윈_도_우;
 
     public void Awake()
     {
@@ -24,24 +27,16 @@ public class CSceneManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void LoadSceneWithProcess(string sceneName)
+    public void LoadScene(string sceneName, Task loadAction, Action onLoadCompleteAction, float minLoadingTime = 0f)
     {
+        로_딩_윈_도_우.SetActive(true);
+
         _nextScene = sceneName;
-        //SceneManager.LoadScene("LoadingScene");
-        StartCoroutine(LoadSceneProcess());
+        SceneManager.LoadScene(Constant.Scene.LOADING_SCENE_NAME);
+        StartCoroutine(LoadSceneProcess(loadAction, onLoadCompleteAction, minLoadingTime));
     }
 
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
-
-    public void Test()
-    {
-        StartCoroutine(TestLoad());
-    }
-
-    IEnumerator LoadSceneProcess()
+    IEnumerator LoadSceneProcess(Task loadAction, Action onLoadCompleteAction, float minLoadingTime = 0f)
     {
         // Wait 2 frames for LoadingScene
         yield return new WaitForEndOfFrame();
@@ -50,14 +45,18 @@ public class CSceneManager : MonoBehaviour
         AsyncOperation op = SceneManager.LoadSceneAsync(_nextScene);
         op.allowSceneActivation = false;
 
-        GameManager.Instance.LoadGame();
+        float loadingTime = 0f;
 
-        while (GameManager.Instance.IsLoadComplete() == false &&
-               op.isDone == false)
+        while ((loadAction != null && !loadAction.IsCompleted) ||
+               (op.progress < 0.9f) ||
+               loadingTime < minLoadingTime)
         {
             yield return new WaitForEndOfFrame();
-            // LoadingSceneController.Instance.SetLoadingProgress(GameManager.Instance.GetLoadProgress());
-            // LoadingSceneController.Instance.SetLoadingText(GameManager.Instance.GetLoadProgressText());
+
+            loadingTime += Time.deltaTime;
+
+            //// TODO : Show Loading Progress
+
         }
 
         op.allowSceneActivation = true;
@@ -66,38 +65,8 @@ public class CSceneManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
 
-        GameManager.Instance.InitMonoBehaviourGameEngine();
+        로_딩_윈_도_우.SetActive(false);
 
-        // Wait 1 frame for MonoBehaviour GameEngine Load
-        yield return new WaitForEndOfFrame();
-        
-        GameManager.Instance.StartGame();
-    }
-
-    IEnumerator TestLoad()
-    {
-        // Wait 2 frames for LoadingScene
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-
-        GameManager.Instance.LoadGame();
-
-        while (GameManager.Instance.IsLoadComplete() == false)
-        {
-            yield return new WaitForEndOfFrame();
-            // LoadingSceneController.Instance.SetLoadingProgress(GameManager.Instance.GetLoadProgress());
-            // LoadingSceneController.Instance.SetLoadingText(GameManager.Instance.GetLoadProgressText());
-        }
-
-        // Wait 2 frames for applying new Scene
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-
-        GameManager.Instance.InitMonoBehaviourGameEngine();
-
-        // Wait 1 frame for MonoBehaviour GameEngine Load
-        yield return new WaitForEndOfFrame();
-
-        GameManager.Instance.StartGame();
+        onLoadCompleteAction.RunExt();
     }
 }
