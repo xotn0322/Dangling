@@ -22,6 +22,6 @@ public static class Constant
 
     public static class Scene
     {
-        public const string LOADING_SCENE_NAME = "·Î µù ¾À";
+        public const string LOADING_SCENE_NAME = "LoadingScene";
     }
 }

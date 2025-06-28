@@ -262,7 +262,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uC62C_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseHover
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -277,7 +277,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uB0B4_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseExit
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -510,7 +510,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uAC8C_\uC784_\uC2DC_\uC791"
+        m_MethodName: StartLoading
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -575,7 +575,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uC62C_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseHover
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -590,7 +590,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uB0B4_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseExit
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -687,7 +687,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uD06C_\uB808_\uB527_\uC5F4_\uAE30"
+        m_MethodName: OpenCreditWinodw
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -752,7 +752,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uC62C_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseHover
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -767,7 +767,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uB0B4_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseExit
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2208,7 +2208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uAC8C_\uC784_\uC885_\uB8CC"
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2273,7 +2273,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uC62C_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseHover
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2288,7 +2288,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1973229876}
         m_TargetAssemblyTypeName: TitleScript, Assembly-CSharp
-        m_MethodName: "\uB9C8_\uC6B0_\uC2A4_\uB0B4_\uB838_\uC744_\uB54C"
+        m_MethodName: OnMouseExit
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2911,13 +2911,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500fdcb688395849b2f969c0cbee472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "\uD06C_\uB808_\uB527_\uD654_\uBA74": {fileID: 1468378724}
-  "\uD0C0_\uC774_\uD2C0_\uBC30_\uACBD":
-  - {fileID: 1199524643}
-  - {fileID: 1806565719}
-  - {fileID: 844735093}
-  - {fileID: 1506012726}
-  "\uAC00_\uC9DC_\uB85C_\uB529_\uC2DC_\uAC04": 2
+  CreditWindow: {fileID: 1468378724}
+  TitleButtonBack: []
+  FakeLoadingTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

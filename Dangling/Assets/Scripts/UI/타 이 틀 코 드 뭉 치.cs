@@ -7,54 +7,54 @@ using UnityEngine.SceneManagement;
 
 public class TitleScript : MonoBehaviour
 {
-    public GameObject 크_레_딧_화_면;
-    public List<GameObject> 타_이_틀_배_경 = new();
-    public float 가_짜_로_딩_시_간 = 1f;
+    public GameObject CreditWindow;
+    public List<GameObject> TitleButtonBack = new();
+    public float FakeLoadingTime = 1f;
 
     public void Awake()
     {
-        foreach (var item in 타_이_틀_배_경)
+        foreach (var item in TitleButtonBack)
         {
             item.SetActive(false);
         }
-        크_레_딧_닫_기();
+        CloseCreditWinodw();
     }
 
-    public void 마_우_스_올_렸_을_때(int 인_덱_스)
+    public void OnMouseHover(int index)
     {
-        타_이_틀_배_경[인_덱_스].SetActive(true);
+        TitleButtonBack[index].SetActive(true);
     }
 
-    public void 마_우_스_내_렸_을_때(int 인_덱_스)
+    public void OnMouseExit(int index)
     {
-        타_이_틀_배_경[인_덱_스].SetActive(false);
+        TitleButtonBack[index].SetActive(false);
     }
 
 
-    public void 게_임_시_작()
+    public void StartLoading()
     {
-        var 로_딩_엔_진 = Task.Run(() => GameManager.Instance.InitMonoBehaviourGameEngine());
+        var loadingEngine = Task.Run(() => GameManager.Instance.InitMonoBehaviourGameEngine());
 
-        CSceneManager.Instance.LoadScene("MainScene", 로_딩_엔_진, 진_짜_시_작, 가_짜_로_딩_시_간);
+        CSceneManager.Instance.LoadScene("MainScene", loadingEngine, StartGame, FakeLoadingTime);
     }
 
-    public void 진_짜_시_작()
+    public void StartGame()
     {
-
+        GameManager.Instance.StartGame();
     }
 
-    public void 게_임_종_료()
+    public void QuitGame()
     {
         GameManager.Instance.QuitGame();
     }
 
-    public void 크_레_딧_열_기()
+    public void OpenCreditWinodw()
     {
-        크_레_딧_화_면.SetActive(true);
+        CreditWindow.SetActive(true);
     }
 
-    public void 크_레_딧_닫_기()
+    public void CloseCreditWinodw()
     {
-        크_레_딧_화_면.SetActive(false);
+        CreditWindow.SetActive(false);
     }
 }
