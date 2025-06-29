@@ -175,6 +175,10 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
         _currentWaterY += amount * Time.deltaTime;
         _currentWaterY = Mathf.Clamp(_currentWaterY, 0.0f, _maxWaterY);        
 
+        if(_currentWaterY >=80)
+        {
+            LightManager.Instance.StartAlert("Red");
+        }
         if( _currentWaterY >= _maxWaterY)
         {
             //GameOver
