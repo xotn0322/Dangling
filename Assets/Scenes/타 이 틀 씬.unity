@@ -1273,7 +1273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SUPER ULTRA GAME NAME
+  m_text: SUPER ULTRA TITANIC
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2593,7 +2593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14dc9490e363bc479c94e29e49f87b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalPlayTimeMS: 300000
+  totalPlayTimeMS: 180000
 --- !u!4 &1812339654
 Transform:
   m_ObjectHideFlags: 0

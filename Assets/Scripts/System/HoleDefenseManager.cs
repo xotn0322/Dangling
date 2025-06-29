@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class HoleDefenseManager : MonoBehaviour, IEngineComponent
 {
@@ -60,7 +61,6 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
                 Debug.Log("ã�� �� ���� ");
         }
 
-
         StartHoleDefense();
         return this;
     }
@@ -76,7 +76,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
         spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
         {
             SpawnNextHole();
-            //SoundManager.Instance.PlaySFX("구멍 생김2");
+            SoundManager.Instance.PlaySFX("구멍 생김2");
             if (GameManager.Instance.GetPhase() == 1)
                 LightManager.Instance.StartAlert("Orange");
             t.CurrentTimeMs = time;
@@ -184,6 +184,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             //GameOver
             //CSceneManager.Instance.LoadScene("GameOver");
             Debug.Log("GameOver");
+            GameManager.Instance.EndGame();
         }
     }
 

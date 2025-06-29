@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using TMPro;
+using UnityEngine.Playables;
 
 
 public class GameManager : MonoBehaviour
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     private float _LoadProgress = 0f;
     private string _LoadProgressText;
     private PlayerComponent playerComponent;
+    private PlayableDirector playableDirector;
     private int Phase;
 
     //public
@@ -145,6 +147,7 @@ public class GameManager : MonoBehaviour
     {
         InitMonoBehaviourGameEngine();
         SpawnPlayer();
+        SetPlayableDirector();
         StartGameTimer();
     }
 
@@ -153,6 +156,12 @@ public class GameManager : MonoBehaviour
         var resource = ResourcesManager.Instance.Load<GameObject>("Prefabs/Player");
         var player = Instantiate(resource);
         playerComponent = player.GetComponent<PlayerComponent>();
+    }
+
+    private void SetPlayableDirector()
+    {
+        GameObject playableDirectorObject = GameObject.Find("TimeLine");
+        playableDirector = playableDirectorObject.GetComponent<PlayableDirector>();
     }
 
     private void StartGameTimer()
@@ -224,9 +233,15 @@ public class GameManager : MonoBehaviour
         TimeManager.Instance.ResisterTimer(breathTimer);
     }
 
-    private void EndGame() 
+    public void EndGame() 
     {
+        playerComponent.gameObject.SetActive(false);
+        TimeManager.Instance.ClearTimers();
+        SoundManager.Instance.SetMixerSFXVolume(0);
+        SoundManager.Instance.SetMixerVoiceVolume(0);
 
+        SoundManager.Instance.PlayMusic("빨리 정해라");
+        playableDirector.Play();
     }
 
     private IEnumerator SmoothFreeze(float from, float to, float duration, PlayerComponent freezeTarget)

@@ -15,7 +15,7 @@ public class LightManager : MonoBehaviour, IEngineComponent
     private static LightManager _instance;
 
     private Color redColor = Color.red;
-    private Color orangeColor = new Color(1f, 0.5f, 0f, 1f); // 주황색
+    private Color orangeColor = Color.yellow; // 주황색
     private Color goalColor;
     private GameObject Alert;
     private Light2D globalLight;
@@ -57,7 +57,7 @@ public class LightManager : MonoBehaviour, IEngineComponent
                     StartCoroutine(OnAlert4F());
                     break;
 
-                case "Orange":
+                case "Yellow":
                     goalColor = orangeColor;
                     StartCoroutine(OnAlert8F());
                     break;

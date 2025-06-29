@@ -119,4 +119,10 @@ public class TimeManager : MonoBehaviour, IEngineComponent
         }
         _pendingAddRealTimeTimerList.Clear();
     }
+
+    public void ClearTimers()
+    {
+        _realTimeTimerList.Clear();
+        _gameTimeTimerList.Clear();
+    }
 }
