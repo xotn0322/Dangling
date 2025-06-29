@@ -235,6 +235,11 @@ public class GameManager : MonoBehaviour
 
     public void EndGame() 
     {
+        var go = GameObject.Find("UI_HoleDefense");
+        if(go!=null)
+        {
+            go.SetActive(false);
+        }
         playerComponent.gameObject.SetActive(false);
         TimeManager.Instance.ClearTimers();
         SoundManager.Instance.SetMixerSFXVolume(0);
