@@ -57,7 +57,7 @@ MonoBehaviour:
   openHoleWaterAmount: 2
   halfOpenHoleWaterAmount: 0.5
   closeHoleWaterAmount: 0
-  time: 20000
+  time: 25000
 --- !u!114 &797628061988107011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544bbab721377ca47867cd3261abf89e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followZOffset: 5
   time: 10000
   maxIceCount: 3
   duration: 3
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0

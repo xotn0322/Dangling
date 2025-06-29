@@ -22,6 +22,8 @@ public class IceHandleManager : MonoBehaviour
     private bool isDoubleClick;
     int currentIceIndex = 0;
 
+    public LayerMask playerMask;
+
     void Awake()
     {
         // 2. ½Ì±ÛÅæ ÃÊ±âÈ­
@@ -31,7 +33,6 @@ public class IceHandleManager : MonoBehaviour
             return;
         }
         Instance = this;
-
         _ices = new IceInstance[maxIceCount];
     }
 
@@ -41,6 +42,7 @@ public class IceHandleManager : MonoBehaviour
         ices.Add(new Ice(0f, -3f));
         ices.Add(new Ice(5f, -3f));
 
+        playerMask = LayerMask.GetMask("Default");
         Timer spawnTimer = new Timer();
         spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
         {
@@ -131,7 +133,8 @@ public class IceHandleManager : MonoBehaviour
                 {
                     click = 2;
                     isDoubleClick = true;
-                    
+                    hitObject.layer = LayerMask.NameToLayer("Player");
+
                     Debug.Log("µÎ ¹øÂ° Å¬¸¯! Ice ÆÄ±«: " + hitObject.name);
 
                     StartCoroutine(DestroyWithAlpaCoroutine(hitObject, duration));

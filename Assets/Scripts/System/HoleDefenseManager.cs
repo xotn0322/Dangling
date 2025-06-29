@@ -186,7 +186,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     private IEnumerable<Vector2> SamplePoints2D(Vector3 holePos, int count)
     {
         yield return new Vector2(holePos.x, holePos.y);
-        float radius = 0.5f;
+        float radius = 0.25f;
         for (int i = 0; i < count - 1; i++)
         {
             float angle = (360f / (count - 1) * i) * Mathf.Deg2Rad;
