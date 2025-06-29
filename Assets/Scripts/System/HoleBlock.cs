@@ -10,8 +10,13 @@ public class HoleBlock
     public void InitializeHoles()
     {
         holes.Add(new(3f, -3f));
-        holes.Add(new(7f, 1f));
-        holes.Add(new(2f, 4f));
+        holes.Add(new(0f, -2f));
+        holes.Add(new(2f, 3f));
+        holes.Add(new(4f, 0f));
+        holes.Add(new(0f, -1f));
+        holes.Add(new(-1f, 2f));
+        holes.Add(new(-3f, 2f));
+        holes.Add(new(-4f, 0f));
     }
 
     public Hole PickRandomPosition()

@@ -6,6 +6,8 @@ using static Constant;
 
 public class IceHandleManager : MonoBehaviour
 {
+    public static IceHandleManager Instance { get; private set; }
+
     List<Ice> ices = new();
     Queue<Ice> recycledPositions = new();
     IceInstance[] _ices;
@@ -15,10 +17,21 @@ public class IceHandleManager : MonoBehaviour
     public long time = 5000;
     public int maxIceCount = 3;
 
+    public float duration;
+    private int click;
+    private bool isDoubleClick;
     int currentIceIndex = 0;
 
     void Awake()
     {
+        // 2. 싱글톤 초기화
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         _ices = new IceInstance[maxIceCount];
     }
 
@@ -99,38 +112,56 @@ public class IceHandleManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mouseWorldPos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
 
-            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+            RaycastHit2D hitInfo = Physics2D.Raycast(mouseWorldPos2D, Vector2.zero);
+            if (hitInfo.collider != null && hitInfo.collider.CompareTag("Ice"))
             {
                 GameObject hitObject = hitInfo.collider.gameObject;
 
-                if (hitObject.CompareTag("Ice"))
+                if (selectedIce == null)
                 {
-                    if (selectedIce == null)
+                    selectedIce = hitObject;
+                    click = 1;
+                    isDoubleClick = false;
+                    Debug.Log("Ice 선택됨: " + hitObject.name);
+                }
+                else if (selectedIce == hitObject && click == 1)
+                {
+                    click = 2;
+                    isDoubleClick = true;
+                    
+                    Debug.Log("두 번째 클릭! Ice 파괴: " + hitObject.name);
+
+                    StartCoroutine(DestroyWithAlpaCoroutine(hitObject, duration));
+
+                    for (int i = 0; i < _ices.Length; i++)
                     {
-                        // 선택하지 않은 상태에서 클릭하면 선택
-                        selectedIce = hitObject;
-                        Debug.Log("Ice 선택됨: " + selectedIce.name);
+                        var inst = _ices[i];
+                        if (inst != null && inst.gameObject == hitObject)
+                        {
+                            recycledPositions.Enqueue(inst.data);
+                            _ices[i] = null;
+                            break;
+                        }
                     }
-                    else if (selectedIce == hitObject)
-                    {
-                        // 이미 선택된 Ice를 다시 클릭하면 선택 해제
-                        selectedIce = null;
-                        Debug.Log("Ice 선택 해제");
-                    }
+                    CompactIces();
+
+                    // 3) 선택 해제, 클릭 카운트 리셋
+                    selectedIce = null;
+                    click = 0;
                 }
             }
         }
 
-        // 선택된 Ice가 있으면 마우스를 따라다님
+        // 선택된 Ice가 있으면 커서를 따라다님
         if (selectedIce != null)
         {
             Vector3 mouseScreenPosition = Input.mousePosition;
-            mouseScreenPosition.z = followZOffset; // 얼마나 앞으로 나올지
-
+            mouseScreenPosition.z = followZOffset;
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-            selectedIce.transform.position = worldPos;
+            selectedIce.transform.position = new Vector3(worldPos.x, worldPos.y, selectedIce.transform.position.z);
         }
     }
 
@@ -146,6 +177,31 @@ public class IceHandleManager : MonoBehaviour
             }
         }
         return false;
+    }
+    private IEnumerator DestroyWithAlpaCoroutine(GameObject go, float duration)
+    {
+        var sprite = go.GetComponent<SpriteRenderer>();
+        if (sprite == null)
+        {
+            Destroy(go);
+            yield break;
+        }
+
+        Color original = sprite.color;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += UnityEngine.Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float a = Mathf.Lerp(original.a, 0f, t);
+            sprite.color = new Color(original.r, original.g, original.b, a);
+            yield return null;
+        }
+
+        // 완전 투명 보장
+        sprite.color = new Color(original.r, original.g, original.b, 0f);
+        Destroy(go);
     }
 
     private void CompactIces()
@@ -165,5 +221,26 @@ public class IceHandleManager : MonoBehaviour
         _iceCount = index;
 
         Debug.Log($"배열 정리 완료. 현재 개수: {_iceCount}/{_ices.Length}");
+    }
+
+    public void ClearSelectedIce()
+    {
+        selectedIce = null;
+        click = 0;
+    }
+
+    public void RemoveIceFromArray(GameObject go)
+    {
+        for (int i = 0; i < _ices.Length; i++)
+        {
+            var inst = _ices[i];
+            if (inst != null && inst.gameObject == go)
+            {
+                recycledPositions.Enqueue(inst.data);
+                _ices[i] = null;
+                CompactIces();
+                break;
+            }
+        }
     }
 }

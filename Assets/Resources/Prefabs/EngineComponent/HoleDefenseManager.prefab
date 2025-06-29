@@ -54,10 +54,10 @@ MonoBehaviour:
   rayLength: 100
   _maxWaterY: 100
   _currentWaterY: 0
-  openHoleWaterAmount: 3
-  halfOpenHoleWaterAmount: 1
+  openHoleWaterAmount: 2
+  halfOpenHoleWaterAmount: 0.5
   closeHoleWaterAmount: 0
-  time: 1000
+  time: 20000
 --- !u!114 &797628061988107011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,3 +72,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 10000
   maxIceCount: 3
+  duration: 3

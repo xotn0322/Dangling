@@ -69,9 +69,9 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
     {
         _block.InitializeHoles();
         isActiveHole = false;
-        holes = _block.PickRandomPositions(1, false);
+        holes = _block.PickRandomPositions(8, false);
         _holePrefabs = new GameObject[holes.Length];
-
+        SpawnNextHole();
         Timer spawnTimer = new Timer();
         spawnTimer.SetTimer(ETimerType.GameTime, false, false, time, actionOnExpire: (t) =>
         {
@@ -121,6 +121,11 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             );
 
             bool isHit = (hit2D.collider != null);
+
+            if (hit2D.collider != null)
+            {
+                GameObject hitObject = hit2D.collider.gameObject;
+            }
             Debug.DrawRay(origin, dir * rayLength, isHit ? Color.green : Color.red, 0.5f);
 
             if (isHit)
@@ -136,6 +141,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             case 0f:
                 // hole is 100%
                 UpdateWaterLevel(openHoleWaterAmount);
+                
                 break;
 
             case float r when r > 0f && r < 1f:
@@ -230,5 +236,16 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
         else
             return holes;
     }
+
+    public float GetCurrentWaterValue()
+    {
+        return _currentWaterY;
+    }
+
+    public float GetMaxWaterValue()
+    {
+        return _maxWaterY;
+    }
+
     #endregion
 }
