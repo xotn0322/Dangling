@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
     {
         InitMonoBehaviourGameEngine();
         SpawnPlayer();
+        StartBGM("Cosy - Dyalla");
         SetPlayableDirector();
         StartGameTimer();
     }
@@ -162,6 +163,11 @@ public class GameManager : MonoBehaviour
     {
         GameObject playableDirectorObject = GameObject.Find("TimeLine");
         playableDirector = playableDirectorObject.GetComponent<PlayableDirector>();
+    }
+
+    private void StartBGM(string musicName)
+    {
+        SoundManager.Instance.PlayMusic(musicName);
     }
 
     private void StartGameTimer()
@@ -240,12 +246,15 @@ public class GameManager : MonoBehaviour
         {
             go.SetActive(false);
         }
+
         playerComponent.gameObject.SetActive(false);
         TimeManager.Instance.ClearTimers();
+        SoundManager.Instance.StopMusic();
         SoundManager.Instance.SetMixerSFXVolume(0);
         SoundManager.Instance.SetMixerVoiceVolume(0);
+        SoundManager.Instance.SetMixerMusicVolume(100);
 
-        SoundManager.Instance.PlayMusic("빨리 정해라");
+        SoundManager.Instance.PlayMusic("엔딩");
         playableDirector.Play();
     }
 

@@ -78,7 +78,7 @@ public class HoleDefenseManager : MonoBehaviour, IEngineComponent
             SpawnNextHole();
             SoundManager.Instance.PlaySFX("구멍 생김2");
             if (GameManager.Instance.GetPhase() == 1)
-                LightManager.Instance.StartAlert("Orange");
+                LightManager.Instance.StartAlert("Yellow");
             t.CurrentTimeMs = time;
         });
         TimeManager.Instance.ResisterTimer(spawnTimer);

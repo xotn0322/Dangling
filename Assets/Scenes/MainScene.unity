@@ -384,6 +384,10 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6854200506383636179, guid: 87cb6a08a1def844a8d01a1b7e0ee892, type: 3}
+      propertyPath: m_Color.a
+      value: 0.33333334
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -492,7 +496,7 @@ Transform:
   m_GameObject: {fileID: 446789464}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.26760378, y: 0.16000009, z: -0.021698385}
+  m_LocalPosition: {x: 0.26760378, y: 0.16000009, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1140,7 +1144,7 @@ Transform:
   m_GameObject: {fileID: 1519277103}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.26760378, y: 0.04, z: -0.021698385}
+  m_LocalPosition: {x: 0.26760378, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

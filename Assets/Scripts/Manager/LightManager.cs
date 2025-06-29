@@ -66,7 +66,9 @@ public class LightManager : MonoBehaviour, IEngineComponent
     }
 
     private IEnumerator OnAlert4F()
-    {        
+    {
+        SoundManager.Instance.PlaySFXWithDuration("사이렌1", 3.0f);
+        globalLight.color = goalColor;
         for (int i = 0; i < 2; i++) // 2번 반복
         {
             yield return StartCoroutine(TransitionIntensity(0f, 4f, transitionDuration));
@@ -78,7 +80,8 @@ public class LightManager : MonoBehaviour, IEngineComponent
     }
 
     private IEnumerator OnAlert8F()
-    {        
+    {
+        globalLight.color = goalColor;
         for (int i = 0; i < 2; i++) // 2번 반복
         {
             yield return StartCoroutine(TransitionIntensity(0f, 8f, transitionDuration));

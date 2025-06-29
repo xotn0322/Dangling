@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections.Generic;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour, IEngineComponent
 {
@@ -259,6 +260,28 @@ public class SoundManager : MonoBehaviour, IEngineComponent
         if (isMuted || !sfxDictionary.ContainsKey(sfxName)) return;
 
         sfxSource.PlayOneShot(sfxDictionary[sfxName], volumeScale);
+    }
+
+    // 이름과 시간으로 조절되는 SFX 재생 함수
+    public void PlaySFXWithDuration(string sfxName, float duration)
+    {
+        if (isMuted || !sfxDictionary.ContainsKey(sfxName)) return;
+
+        StartCoroutine(PlaySFXForDuration(sfxName, duration));
+    }
+
+    private IEnumerator PlaySFXForDuration(string sfxName, float duration)
+    {
+        AudioClip clip = sfxDictionary[sfxName];
+        sfxSource.clip = clip;
+        sfxSource.Play();
+
+        yield return new WaitForSeconds(duration);
+
+        if (sfxSource.clip == clip)
+        {
+            sfxSource.Stop();
+        }
     }
 
     // === Voice Methods ===

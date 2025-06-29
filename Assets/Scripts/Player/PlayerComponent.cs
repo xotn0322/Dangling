@@ -21,6 +21,13 @@ public class PlayerComponent : MonoBehaviour
     public GameObject R_hand;
     public GameObject L_foot;
     public GameObject R_foot;
+    
+    // Toggle 오브젝트들
+    public GameObject L_handToggle;
+    public GameObject R_handToggle;
+    public GameObject L_footToggle;
+    public GameObject R_footToggle;
+    
     public float freezeFactor = 1f;
     public float maxSpeed = 11f; 
     public long jumpCoolTimeMs = 500;
@@ -34,6 +41,12 @@ public class PlayerComponent : MonoBehaviour
         if (R_hand != null) R_handRigidbody = R_hand.GetComponent<Rigidbody2D>();
         if (L_foot != null) L_footRigidbody = L_foot.GetComponent<Rigidbody2D>();
         if (R_foot != null) R_footRigidbody = R_foot.GetComponent<Rigidbody2D>();
+
+        // 시작 시 모든 Toggle을 Off로 설정
+        SetToggleActive(L_handToggle, false);
+        SetToggleActive(R_handToggle, false);
+        SetToggleActive(L_footToggle, false);
+        SetToggleActive(R_footToggle, false);
 
         SetPlayerData();
     }
@@ -90,9 +103,15 @@ public class PlayerComponent : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!isLeftHand)
-                 L_handRigidbody.bodyType = RigidbodyType2D.Static;
+            {
+                L_handRigidbody.bodyType = RigidbodyType2D.Static;
+                SetToggleActive(L_handToggle, true);
+            }
             else
+            {
                 L_handRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                SetToggleActive(L_handToggle, false);
+            }
 
             turnState(ref isLeftHand);
         }
@@ -101,9 +120,15 @@ public class PlayerComponent : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (!isRightHand)
+            {
                 R_handRigidbody.bodyType = RigidbodyType2D.Static;
+                SetToggleActive(R_handToggle, true);
+            }
             else
+            {
                 R_handRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                SetToggleActive(R_handToggle, false);
+            }
 
             turnState(ref isRightHand);
         }
@@ -112,9 +137,15 @@ public class PlayerComponent : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (!isLeftFoot)
+            {
                 L_footRigidbody.bodyType = RigidbodyType2D.Static;
+                SetToggleActive(L_footToggle, true);
+            }
             else
+            {
                 L_footRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                SetToggleActive(L_footToggle, false);
+            }
 
             turnState(ref isLeftFoot);
         }
@@ -123,9 +154,15 @@ public class PlayerComponent : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (!isRightFoot)
+            {
                 R_footRigidbody.bodyType = RigidbodyType2D.Static;
+                SetToggleActive(R_footToggle, true);
+            }
             else
+            {
                 R_footRigidbody.bodyType = RigidbodyType2D.Dynamic;
+                SetToggleActive(R_footToggle, false);
+            }
 
             turnState(ref isRightFoot);
         }
@@ -144,5 +181,13 @@ public class PlayerComponent : MonoBehaviour
     public void SetFreezeFactor(float value)
     {
         freezeFactor = Mathf.Clamp01(value);
+    }
+
+    private void SetToggleActive(GameObject toggle, bool active)
+    {
+        if (toggle != null)
+        {
+            toggle.SetActive(active);
+        }
     }
 }

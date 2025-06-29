@@ -55,6 +55,10 @@ MonoBehaviour:
   voiceSource: {fileID: 0}
   musicClips:
   - {fileID: 8300000, guid: 3e18d5c087247094a9a522c9e9ff1900, type: 3}
+  - {fileID: 8300000, guid: e55a4da609304c34c8c1d663316c619a, type: 3}
+  - {fileID: 8300000, guid: a93c9dbccb7e976438fb6604a5d19f71, type: 3}
+  - {fileID: 8300000, guid: 47ebda2db6f84984e99d80c251fa0085, type: 3}
+  - {fileID: 8300000, guid: 4286ed406b885724a859c5b6b90cee2e, type: 3}
   sfxClips:
   - {fileID: 8300000, guid: d81a4a9d650ae1140a92185015e715af, type: 3}
   - {fileID: 8300000, guid: dac44e8dd32b92f49a8d238792c002cf, type: 3}
